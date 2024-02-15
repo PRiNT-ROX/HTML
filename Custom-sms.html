@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DONS TEAM CUSTOM SMS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0f0f0;
+        }
+        .container {
+            max-width: 300px;
+            margin: 50px auto;
+            padding: 40px;
+            background-color: #bbffjs;
+            border-radius: 50px;
+            box-shadow: 0 0 1000px rgba(1, 2, 3, 4.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        label {
+            display: block;
+            margin-bottom: 18px;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            resize: none;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #06b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border-color: #ebccd1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CUSTOM SMS</h1>
+        <form id="smsForm">
+            <label for="phoneNumbers">NUMBER:</label>
+            <input type="text" id="phoneNumbers" name="phoneNumbers" required>
+            <label for="message">MESSAGE:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            <button type="submit">SEND SMS</button>
+        </form>
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        document.getElementById('smsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var phoneNumbers = document.getElementById('phoneNumbers').value;
+            var message = document.getElementById('message').value;
+            
+            // AJAX request to send SMS
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://YourDomain.xyz/bulksms/Api.php?phoneNumbers=' + phoneNumbers + '&message=' + message, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    var resultDiv = document.getElementById('result');
+                    resultDiv.style.display = 'block';
+                    resultDiv.className = response.success ? 'result' : 'result error';
+                    resultDiv.textContent = response.message;
+                }
+            };
+            xhr.send();
+        });
+    </script>
+</body>
+  </html>
